@@ -64,7 +64,6 @@ namespace iPrazos.Selenium
 				driver.Navigate().GoToUrl(url);
 				while (NextPageExists)
 				{
-					Program.PagesCrawled++;
 					ScrapeData(driver);
 					SaveHtml(driver);
 					SaveJson();
@@ -88,6 +87,7 @@ namespace iPrazos.Selenium
 			string filePath = Path.Combine(HtmlFolderName, fileName);
 			if (ProcessPage)
 			{
+				Program.PagesCrawled++;
 				if (!File.Exists(filePath))
 				{
 					string htmlContent = driver.PageSource;
