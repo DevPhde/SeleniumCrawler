@@ -5,12 +5,10 @@ namespace Crawler.Events
 {
     public class CrawlerSaveEvent : INotification
     {
-        public string EndCrawlingFormattedDate;
         public string FilePathJson;
 
-		public CrawlerSaveEvent(int pageCount, string endCrawlingFormattedDate, string filePathJson)
+		public CrawlerSaveEvent(string filePathJson)
 		{
-			EndCrawlingFormattedDate = endCrawlingFormattedDate;
 			FilePathJson = filePathJson;
 		}
 	}

@@ -10,13 +10,15 @@ namespace iPrazos.Events.handlers
 	{
 		public Task Handle(CrawlerSaveEvent notification, CancellationToken cancellationToken)
 		{
+			Program.EventCounter++;
+			if(Program.EventCounter == 2)
+			{
+				Program.EndCrawling = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+				string formattedDateTime = Program.EndCrawling.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
 
 				string jsonPath = "proxyList.json";
 				string jsonContent = File.ReadAllText(jsonPath);
 				var json = JObject.Parse(jsonContent);
-
-				
-
 
 				List<Dictionary<string, object>> proxyDataList = new List<Dictionary<string, object>>();
 				foreach (var page in json)
@@ -38,9 +40,11 @@ namespace iPrazos.Events.handlers
 						}
 					}
 				}
-            Console.WriteLine(Program.StartCrawling);
-            ProxyData proxyData = new(Program.StartCrawling, notification.EndCrawlingFormattedDate, proxyDataList, Program.LinesCrawled, Program.PagesCrawled);
+			
+			Console.WriteLine(Program.StartCrawling);
+            ProxyData proxyData = new(Program.StartCrawling, formattedDateTime, proxyDataList, Program.LinesCrawled, Program.PagesCrawled);
 			_ = ProxyDataRepository.SaveProxyData(proxyData);
+			}
 			return Task.CompletedTask;
 		}
 

@@ -34,7 +34,7 @@ namespace iPrazos.Selenium
 		public void Init(int startPage)
 		{
 			ActualPage = startPage;
-			Console.WriteLine($"Start Thread: {Thread.CurrentThread.Name} na {ActualPage}");
+
 			// HTML FOLDER
 			if (!Directory.Exists(HtmlFolderName))
 			{
@@ -62,16 +62,14 @@ namespace iPrazos.Selenium
 				driver.Navigate().GoToUrl(url);
 				while (NextPageExists)
 				{
+					Program.PagesCrawled++;
 					SaveHtml(driver);
 					ScrapeData(driver);
 					SaveJson();
 					CrawlerPagination(driver);
 				}
 
-				Program.EndCrawling = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-				string formattedDateTime = Program.EndCrawling.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
-
-				_mediator.Publish(new CrawlerSaveEvent(ActualPage, formattedDateTime, FilePathJSON));
+				_mediator.Publish(new CrawlerSaveEvent(FilePathJSON));
 			}
 			catch (Exception ex)
 			{
@@ -79,9 +77,7 @@ namespace iPrazos.Selenium
 				return;
 			}
 			driver.Quit();
-
 		}
-
 
 		private void SaveHtml(ChromeDriver driver)
 		{
@@ -153,11 +149,10 @@ namespace iPrazos.Selenium
 				if(pageNumberArray.Length > 0)
 				{
 					driver.Navigate().GoToUrl($"https://proxyservers.pro/proxy/list/order/updated/order_dir/desc/page/{ActualPage += 2}");
-					Program.PagesCrawled++;
 				}
 				else
 				{
-					throw new PaginationException("Finished.");
+					throw new PaginationException("Crawler Finished.");
 				}
 			}
 			catch (PaginationException ex)
