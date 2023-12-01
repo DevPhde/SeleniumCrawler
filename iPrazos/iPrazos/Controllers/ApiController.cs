@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace iPrazos.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ApiController : ControllerBase
     {
 
-        [HttpGet]
+        [HttpGet("/getAll")]
         public async Task<IActionResult> Get()
         {
             try
