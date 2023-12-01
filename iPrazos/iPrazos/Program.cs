@@ -11,7 +11,7 @@ namespace iPrazos
 		public static object LockObject = new();
 		public static object LockJson = new();
 		public static int LinesCrawled = 0;
-		public static int PagesCrawled = 1;
+		public static int PagesCrawled = 0;
 		public static int EventCounter = 0;
 		public static void Main(string[] args)
 		{
@@ -36,7 +36,7 @@ namespace iPrazos
 			Thread crawler1 = new(() =>
 			{
 				DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-				string startCrawling = time.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
+				StartCrawling = time.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
 				Thread.CurrentThread.Name = "Thread1";
 				crawlerInstance1.Init(1);
 			});
@@ -44,8 +44,6 @@ namespace iPrazos
 
 			Thread crawler2 = new(() =>
 			{
-				DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-				string startCrawling = time.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
 				Thread.CurrentThread.Name = "Thread2";
 				crawlerInstance2.Init(2);
 			});
