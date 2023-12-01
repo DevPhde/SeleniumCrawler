@@ -58,7 +58,7 @@ namespace iPrazos.Selenium
 			ChromeOptions.AddArgument("--headless"); // COMENTAR PARA ATIVAR ABERTURA DO NAVEGADOR
 			var driver = new ChromeDriver(ChromeOptions);
 
-			string url = $"https://proxyservers.pro/proxy/list/order/updated/order_dir/desc/page/{startPage}";
+			string url = $"https://proxyservers.pro/proxy/list/order/updated/order_dir/asc/page/{startPage}";
 			try
 			{
 				driver.Navigate().GoToUrl(url);
@@ -149,7 +149,7 @@ namespace iPrazos.Selenium
 
 				if (pageNumberArray.Length > 0)
 				{
-					driver.Navigate().GoToUrl($"https://proxyservers.pro/proxy/list/order/updated/order_dir/desc/page/{ActualPage += 2}");
+					driver.Navigate().GoToUrl($"https://proxyservers.pro/proxy/list/order/updated/order_dir/asc/page/{ActualPage += 2}");
 				}
 				else
 				{
