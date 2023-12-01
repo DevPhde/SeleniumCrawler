@@ -12,7 +12,6 @@ namespace iPrazos.Events.handlers
 		{
 			Semaphore.WaitOne();
 			try { 
-				notification.PageData[$"Page {notification.Page}"] = notification.ProxyList;
 				string currentJson = File.ReadAllText(notification.JsonPath);
 				var existingData = JsonConvert.DeserializeObject<ConcurrentDictionary<string, List<ProxyConnection>>>(currentJson);
 				foreach (var kvp in notification.PageData)

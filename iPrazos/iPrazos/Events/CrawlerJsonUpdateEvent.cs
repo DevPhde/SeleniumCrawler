@@ -8,14 +8,12 @@ namespace iPrazos.Events
 		public string JsonPath;
 		public Dictionary<string, List<ProxyConnection>> PageData = new Dictionary<string, List<ProxyConnection>>();
 		public int Page;
-		public List<ProxyConnection> ProxyList;
 
-		public CrawlerJsonUpdateEvent(string jsonPath, Dictionary<string, List<ProxyConnection>> pageData, int page, List<ProxyConnection> proxyList)
+		public CrawlerJsonUpdateEvent(string jsonPath, Dictionary<string, List<ProxyConnection>> pageData, int page)
 		{
 			JsonPath = jsonPath;
 			PageData = pageData;
 			Page = page;
-			ProxyList = proxyList;
 		}
 	}
 }

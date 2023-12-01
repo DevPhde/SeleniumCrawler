@@ -5,12 +5,13 @@ using IPrazos.Entity;
 using MediatR;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System.Diagnostics;
 
 namespace iPrazos.Selenium
 {
 	public class SeleniumCrawler
 	{
-		public List<ProxyConnection> ProxyList = new List<ProxyConnection>();
+		private List<ProxyConnection> ProxyList = new List<ProxyConnection>();
 
 		private string HtmlFolderName = "HTML";
 		private string FilePathJSON = "proxyList.json";
@@ -24,6 +25,8 @@ namespace iPrazos.Selenium
 		private readonly IMediator _mediator;
 
 		private int ActualPage = 0;
+
+		private bool ProcessPage = true;
 		public SeleniumCrawler(IMediator mediator)
 		{
 			ChromeOptions = new ChromeOptions();
@@ -63,12 +66,13 @@ namespace iPrazos.Selenium
 				while (NextPageExists)
 				{
 					Program.PagesCrawled++;
-					SaveHtml(driver);
 					ScrapeData(driver);
+					SaveHtml(driver);
 					SaveJson();
 					CrawlerPagination(driver);
-				}
 
+					ProxyList.Clear();
+				}
 				_mediator.Publish(new CrawlerSaveEvent(FilePathJSON));
 			}
 			catch (Exception ex)
@@ -83,18 +87,23 @@ namespace iPrazos.Selenium
 		{
 			string fileName = $"page_{ActualPage}.html";
 			string filePath = Path.Combine(HtmlFolderName, fileName);
-
-			if (!File.Exists(filePath))
+			if(ProcessPage)
 			{
-				string htmlContent = driver.PageSource;
-				File.WriteAllText(filePath, htmlContent);
+				if (!File.Exists(filePath))
+				{
+					string htmlContent = driver.PageSource;
+					File.WriteAllText(filePath, htmlContent);
+				}
 			}
             Console.WriteLine("Running...");
         }
 
 		private void SaveJson()
 		{
-			_mediator.Publish(new CrawlerJsonUpdateEvent(FilePathJSON, PageData, ActualPage, ProxyList));
+			if (ProcessPage)
+			{
+				_mediator.Publish(new CrawlerJsonUpdateEvent(FilePathJSON, PageData, ActualPage));
+			}
 		}
 
 		private void ScrapeData(ChromeDriver driver)
@@ -122,6 +131,7 @@ namespace iPrazos.Selenium
 			}
 			else
 			{
+				ProcessPage = false;
 				NextPageExists = false;
 				return;
 			}
