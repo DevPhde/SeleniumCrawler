@@ -5,7 +5,6 @@ using IPrazos.Entity;
 using MediatR;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Diagnostics;
 
 namespace iPrazos.Selenium
 {
@@ -55,7 +54,7 @@ namespace iPrazos.Selenium
 
 			Console.WriteLine($"{Thread.CurrentThread.Name} Initialized.");
 
-			
+
 			ChromeOptions.AddArgument("--headless"); // COMENTAR PARA ATIVAR ABERTURA DO NAVEGADOR
 			var driver = new ChromeDriver(ChromeOptions);
 
@@ -87,7 +86,7 @@ namespace iPrazos.Selenium
 		{
 			string fileName = $"page_{ActualPage}.html";
 			string filePath = Path.Combine(HtmlFolderName, fileName);
-			if(ProcessPage)
+			if (ProcessPage)
 			{
 				if (!File.Exists(filePath))
 				{
@@ -95,8 +94,8 @@ namespace iPrazos.Selenium
 					File.WriteAllText(filePath, htmlContent);
 				}
 			}
-            Console.WriteLine("Running...");
-        }
+			Console.WriteLine("Running...");
+		}
 
 		private void SaveJson()
 		{
@@ -148,7 +147,7 @@ namespace iPrazos.Selenium
 				.Where(pageNumber => pageNumber != -1)
 				.ToArray();
 
-				if(pageNumberArray.Length > 0)
+				if (pageNumberArray.Length > 0)
 				{
 					driver.Navigate().GoToUrl($"https://proxyservers.pro/proxy/list/order/updated/order_dir/desc/page/{ActualPage += 2}");
 				}
