@@ -90,12 +90,10 @@ namespace iPrazos.Selenium
 				string htmlContent = driver.PageSource;
 				File.WriteAllText(filePath, htmlContent);
 				Console.WriteLine($"Page {ActualPage} saved in {HtmlFolderName} folder.");
-				Console.WriteLine(Thread.CurrentThread.Name);
 			}
 			else
 			{
 				Console.WriteLine($"Page {ActualPage} has already been downloaded, moving to the next page.");
-				Console.WriteLine(Thread.CurrentThread.Name);
 			}
 		}
 
