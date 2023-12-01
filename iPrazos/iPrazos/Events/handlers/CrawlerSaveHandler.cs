@@ -40,8 +40,6 @@ namespace iPrazos.Events.handlers
 						}
 					}
 				}
-			
-			Console.WriteLine(Program.StartCrawling);
             ProxyData proxyData = new(Program.StartCrawling, formattedDateTime, proxyDataList, Program.LinesCrawled, Program.PagesCrawled);
 			_ = ProxyDataRepository.SaveProxyData(proxyData);
 			}

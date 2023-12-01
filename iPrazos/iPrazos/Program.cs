@@ -33,7 +33,7 @@ namespace iPrazos
 			var crawlerInstance1 = app.Services.GetRequiredService<SeleniumCrawler>();
 			var crawlerInstance2 = app.Services.GetRequiredService<SeleniumCrawler>();
 
-			
+
 
 
 			// Configure the HTTP request pipeline.
@@ -49,22 +49,24 @@ namespace iPrazos
 
 
 			app.MapControllers();
+			DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+			StartCrawling = time.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
 
-			Thread crawler2 = new(() =>
-			{
-				
-				Thread.CurrentThread.Name = "Crawler Thread 2";
-				crawlerInstance2.Init(2);
-			});
-			crawler2.Start();
 
 			Thread crawler1 = new(() =>
 			{
-				DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-				StartCrawling = time.ToString("dd-MM-yyyy HH:mm:ss", new System.Globalization.CultureInfo("pt-BR"));
 				Thread.CurrentThread.Name = "Crawler Thread 1";
 				crawlerInstance1.Init(1);
 			});
+
+			Thread crawler2 = new(() =>
+			{
+				Thread.CurrentThread.Name = "Crawler Thread 2";
+				crawlerInstance2.Init(2);
+			});
+			
+
+			crawler2.Start();
 			crawler1.Start();
 
 			app.Run();
