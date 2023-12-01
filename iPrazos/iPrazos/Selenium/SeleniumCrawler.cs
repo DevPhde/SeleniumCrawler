@@ -50,10 +50,10 @@ namespace iPrazos.Selenium
 				}
 			}
 
-			Console.WriteLine("Selenium Scrapper Initialized...");
+			Console.WriteLine($"{Thread.CurrentThread.Name} Initialized.");
 
-			// REMOVER COMENTARIO PARA DESATIVAR A ABERTURA DO NAVEGADOR DO NAVEGADOR
-			//ChromeOptions.AddArgument("--headless");
+			
+			ChromeOptions.AddArgument("--headless"); // COMENTAR PARA ATIVAR ABERTURA DO NAVEGADOR
 			var driver = new ChromeDriver(ChromeOptions);
 
 			string url = $"https://proxyservers.pro/proxy/list/order/updated/order_dir/desc/page/{startPage}";
@@ -81,7 +81,6 @@ namespace iPrazos.Selenium
 
 		private void SaveHtml(ChromeDriver driver)
 		{
-			Console.WriteLine($"html da {Thread.CurrentThread.Name} página {ActualPage}");
 			string fileName = $"page_{ActualPage}.html";
 			string filePath = Path.Combine(HtmlFolderName, fileName);
 
@@ -89,13 +88,9 @@ namespace iPrazos.Selenium
 			{
 				string htmlContent = driver.PageSource;
 				File.WriteAllText(filePath, htmlContent);
-				Console.WriteLine($"Page {ActualPage} saved in {HtmlFolderName} folder.");
 			}
-			else
-			{
-				Console.WriteLine($"Page {ActualPage} has already been downloaded, moving to the next page.");
-			}
-		}
+            Console.WriteLine("Running...");
+        }
 
 		private void SaveJson()
 		{
@@ -127,7 +122,6 @@ namespace iPrazos.Selenium
 			}
 			else
 			{
-				Console.WriteLine("Empty Table, Crawler Stoped.");
 				NextPageExists = false;
 				return;
 			}
@@ -150,7 +144,7 @@ namespace iPrazos.Selenium
 				}
 				else
 				{
-					throw new PaginationException("Crawler Finished.");
+					throw new PaginationException($"{Thread.CurrentThread.Name} Finished.");
 				}
 			}
 			catch (PaginationException ex)
